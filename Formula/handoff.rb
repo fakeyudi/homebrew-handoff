@@ -27,19 +27,11 @@ class Handoff < Formula
   end
 
  def install
-    # Determine the binary name based on OS and architecture
-    binary_name = case [OS.kernel_name, Hardware::CPU.arch]
-                  when ["Darwin", "arm64"]
-                    "handoff-darwin-arm64"
-                  when ["Darwin", "x86_64"]
-                    "handoff-darwin-amd64"
-                  when ["Linux", "arm64"]
-                    "handoff-linux-arm64"
-                  when ["Linux", "x86_64"]
-                    "handoff-linux-amd64"
-                  end
-    
-    bin.install binary_name => "handoff"
+    # The downloaded file is already named with the platform
+    # Just rename it to "handoff" and install
+    Dir.glob("handoff-*").first.tap do |binary|
+      bin.install binary => "handoff"
+    end
   end
 
   test do
